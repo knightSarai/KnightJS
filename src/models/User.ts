@@ -1,4 +1,8 @@
+import axios from 'axios';
+import { API_URL } from 'config';
+
 interface UserProps {
+  id?: number;
   name?: string;
   age?: number;
 }
@@ -30,6 +34,21 @@ export class User {
     handlers.forEach((cb: Callback): void => {
       cb();
     });
+  }
+
+  fetch(): void {
+    axios
+      .get(`${API_URL}/users/${this.data.id}`)
+      .then((res) => this.set(res.data));
+  }
+
+  save(): void {
+    const { id } = this.data;
+    if (id) {
+      axios.put(`${API_URL}/users/${id}`, this.data);
+      return;
+    }
+    axios.post(`${API_URL}/users`, this.data);
   }
 }
 
