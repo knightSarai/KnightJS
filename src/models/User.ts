@@ -1,6 +1,6 @@
-import axios from 'axios';
 import Eventing from 'models/Eventing';
 import Sync from 'models/Sync';
+import Attributes from 'models/Attributes';
 import { API_URL } from 'config';
 
 interface UserProps {
@@ -12,14 +12,10 @@ interface UserProps {
 export class User {
   public events: Eventing = new Eventing();
   public sync: Sync<UserProps> = new Sync<UserProps>(`${API_URL}/users`);
-  constructor(private data: UserProps) {}
+  public attributes: Attributes<UserProps>;
 
-  get(property: keyof UserProps) {
-    return this.data[property];
-  }
-
-  set(props: UserProps): void {
-    Object.assign(this.data, props);
+  constructor(attrs: UserProps) {
+    this.attributes = new Attributes<UserProps>(attrs);
   }
 }
 
