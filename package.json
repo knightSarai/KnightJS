@@ -4,12 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:build": "parcel index.html",
+    "start:server": "json-server -w db.json",
+    "start": "concurrently npm:start:*"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "axios": "^0.22.0",
+    "concurrently": "^6.2.2"
+  },
+  "alias": {
+    "config": "./src/config/index.ts",
+    "models": "./src/models"
   }
 }
