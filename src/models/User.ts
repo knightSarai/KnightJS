@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Eventing from 'models/Eventing';
+import Sync from 'models/Sync';
 import { API_URL } from 'config';
 
 interface UserProps {
@@ -8,34 +9,17 @@ interface UserProps {
   age?: number;
 }
 
-type Callback = () => void;
-
 export class User {
   public events: Eventing = new Eventing();
-
+  public sync: Sync<UserProps> = new Sync<UserProps>(`${API_URL}/users`);
   constructor(private data: UserProps) {}
 
-  get(property: string): UserProps {
+  get(property: keyof UserProps) {
     return this.data[property];
   }
 
   set(props: UserProps): void {
     Object.assign(this.data, props);
-  }
-
-  fetch(): void {
-    axios
-      .get(`${API_URL}/users/${this.data.id}`)
-      .then((res) => this.set(res.data));
-  }
-
-  save(): void {
-    const { id } = this.data;
-    if (id) {
-      axios.put(`${API_URL}/users/${id}`, this.data);
-      return;
-    }
-    axios.post(`${API_URL}/users`, this.data);
   }
 }
 
