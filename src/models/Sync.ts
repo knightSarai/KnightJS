@@ -14,9 +14,9 @@ class Sync<T extends HasId> {
   save(data: T): AxiosPromise {
     const { id } = data;
     if (id) {
-      return axios.put(`${this.url}/users/${id}`, this.data);
+      return axios.patch(`${this.url}/${id}`, data);
     }
-    return axios.post(`${this.url}/users`, this.data);
+    return axios.post(`${this.url}`, data);
   }
 }
 
