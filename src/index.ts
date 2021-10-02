@@ -10,5 +10,6 @@ user.on('error', () => console.log('error'));
 user.fetch(`${API_URL}/users/${user.get('id')}`);
 
 // Todo Add collection model
+// Todo find a better way for handleing Sync methods, espacially the url
 // `${API_URL}/users/${id}`
 //
