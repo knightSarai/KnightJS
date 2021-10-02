@@ -1,15 +1,14 @@
 import User from 'models/User';
+import { API_URL } from 'config';
+const user = User.create({ id: 1 });
 
-const user = User.create();
-
-user.on('change', () => console.log('User Change'));
+user.on('change', () => console.log('User Change', user));
 user.on('save', () => console.log('User Saved'));
+user.on('edit', () => console.log('User Edited'));
 user.on('error', () => console.log('error'));
 
-user.set({ id: 1 });
+user.fetch(`${API_URL}/users/${user.get('id')}`);
 
-user.fetch();
-
-user.set({ name: 'knight Sarai', age: 24 });
-
-user.save();
+// Todo Add collection model
+// `${API_URL}/users/${id}`
+//

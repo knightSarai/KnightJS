@@ -1,22 +1,16 @@
 import axios, { AxiosPromise } from 'axios';
 
-interface HasId {
-  id?: number;
-}
-
-class ApiSync<T extends HasId> {
-  constructor(public url: string) {}
-
-  fetch(id: number): AxiosPromise {
-    return axios.get(`${this.url}/${id}`);
+class ApiSync<T> {
+  fetch(url: string): AxiosPromise {
+    return axios.get(url);
   }
 
-  save(data: T): AxiosPromise {
-    const { id } = data;
-    if (id) {
-      return axios.patch(`${this.url}/${id}`, data);
-    }
-    return axios.post(`${this.url}`, data);
+  save(url: string, data: T): AxiosPromise {
+    return axios.post(url, data);
+  }
+
+  edit(url: string, data: T): AxiosPromise {
+    return axios.patch(url, data);
   }
 }
 

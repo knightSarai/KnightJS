@@ -1,4 +1,5 @@
 import { AxiosPromise, AxiosResponse } from 'axios';
+import { API_URL } from 'config';
 
 interface ModelAttributes<T> {
   get<K extends keyof T>(key: K): T[K];
@@ -7,8 +8,9 @@ interface ModelAttributes<T> {
 }
 
 interface Sync<T> {
-  fetch(id: number): AxiosPromise;
-  save(data: T): AxiosPromise;
+  fetch(path: string): AxiosPromise;
+  save(path: string, data: T): AxiosPromise;
+  edit(path: string, data: T): AxiosPromise;
 }
 
 interface Events {
@@ -44,20 +46,29 @@ class Model<T extends HasId> {
     this.trigger('change');
   }
 
-  fetch(): void {
+  fetch(url: string): void {
     const id = this.attributes.get('id');
     if (typeof id !== 'number') {
       throw new Error("Can't fetch without ID");
     }
-    this.sync.fetch(id).then((response: AxiosResponse) => {
-      this.set(response.data);
-    });
+
+    this.sync
+      .fetch(url)
+      .then((response: AxiosResponse) => this.set(response.data));
   }
 
-  save(): void {
+  save(url: string): void {
     this.sync
-      .save(this.attributes.all())
+      .save(url, this.attributes.all())
       .then(() => this.trigger('save'))
+      .catch(() => this.trigger('error'));
+  }
+
+  edit(url: string): void {
+    const id = this.attributes.get('id');
+    this.sync
+      .edit(url, this.attributes.all())
+      .then(() => this.trigger('edit'))
       .catch(() => this.trigger('error'));
   }
 }
