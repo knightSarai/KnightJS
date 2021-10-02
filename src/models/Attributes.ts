@@ -8,7 +8,7 @@ class Attributes<T> {
     Object.assign(this.data, props);
   };
 
-  getObject = (): T => {
+  all = (): T => {
     return this.data;
   };
 }
