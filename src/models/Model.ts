@@ -1,19 +1,18 @@
 import { AxiosPromise, AxiosResponse } from 'axios';
-import { API_URL } from 'config';
 
-interface ModelAttributes<T> {
+export interface ModelAttributes<T> {
   get<K extends keyof T>(key: K): T[K];
   set(props: T): void;
   all(): T;
 }
 
-interface Sync<T> {
+export interface Sync<T> {
   fetch(path: string): AxiosPromise;
   save(path: string, data: T): AxiosPromise;
   edit(path: string, data: T): AxiosPromise;
 }
 
-interface Events {
+export interface Events {
   on(eventName: string, cb: () => void): void;
   trigger(eventName: string): void;
 }
