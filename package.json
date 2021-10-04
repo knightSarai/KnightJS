@@ -16,10 +16,12 @@
   },
   "dependencies": {
     "axios": "^0.22.0",
-    "concurrently": "^6.2.2"
+    "concurrently": "^6.2.2",
+    "views": "^1.0.2"
   },
   "alias": {
     "config": "./src/config/index.ts",
-    "models": "./src/models"
+    "models": "./src/models",
+    "views": "./src/views"
   }
 }
