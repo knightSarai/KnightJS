@@ -1,18 +1,13 @@
-import User from 'models/User';
+import { API_URL } from 'config';
+import User, { UserProps } from 'models/User';
+import View from 'views/View';
 
-class UserForm {
-  constructor(public parent: Element, public model: User) {
-    this.renderOnChange();
-  }
-
-  renderOnChange(): void {
-    this.model.on('change', () => this.render());
-  }
-
+class UserForm extends View<User, UserProps> {
   eventsMap(): { [key: string]: () => void } {
     return {
       'click:.age-btn': this.onAgeButtonClick,
       'click:.name-btn': this.onNameButtonClick,
+      'click:.save-btn': this.onSaveButtonClick,
     };
   }
 
@@ -30,42 +25,21 @@ class UserForm {
     }
   };
 
-  bindEvents(fragment: DocumentFragment): void {
-    const eventMap = this.eventsMap();
-    for (let eventKey in eventMap) {
-      const [eventName, selector] = eventKey.split(':');
-      const elements = fragment.querySelectorAll(selector);
-      elements.forEach((element) => {
-        element.addEventListener(eventName, eventMap[eventKey]);
-      });
-    }
-  }
-
-  onButtonClick(): void {
-    console.log('Hi');
-  }
+  onSaveButtonClick = (): void => {
+    this.model.save(`${API_URL}/users`);
+  };
 
   template(): string {
     return `
             <div>
-                <h1>User Form</h1>
-                <div>
-                    <p>User Name: ${this.model.get('name')}</p>
-                    <p>User Age: ${this.model.get('age')}</p>
-                </div>
-                <input class="name-input"/>
+                <input placeholder=${this.model.get(
+                  'name'
+                )} class="name-input"/>
                 <button class="name-btn">Change Name</button>
                 <button class="age-btn">Set Age</button>
+                <button class="save-btn">Save</button>
             </div>
         `;
-  }
-
-  render(): void {
-    this.parent.innerHTML = '';
-    const tempateElement = document.createElement('template');
-    tempateElement.innerHTML = this.template();
-    this.bindEvents(tempateElement.content);
-    this.parent.append(tempateElement.content);
   }
 }
 

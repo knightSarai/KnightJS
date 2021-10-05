@@ -1,8 +1,8 @@
-import Model, { Events } from 'models/Model';
-
+import { Events } from 'models/Model';
 import axios, { AxiosResponse } from 'axios';
-import { API_URL } from 'config';
+
 // This class can take any types of model and create a collection out of it
+
 class Collection<T, K> {
   models: T[] = [];
 
