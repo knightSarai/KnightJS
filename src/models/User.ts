@@ -3,7 +3,6 @@ import Eventing from 'models/Eventing';
 import ApiSync from 'models/ApiSync';
 import Attributes from 'models/Attributes';
 import Collection from './Collection';
-import { API_URL } from 'config';
 
 export interface UserProps {
   id?: number;
@@ -21,7 +20,7 @@ export class User extends Model<UserProps> {
   }
 
   static bulk(): Collection<User, UserProps> {
-    return new Collection<User, UserProps>(new Eventing(), (json: UserProps) =>
+    return new Collection<User, UserProps>((json: UserProps) =>
       User.create(json)
     );
   }

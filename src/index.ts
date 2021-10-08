@@ -1,11 +1,19 @@
-import UserForm from 'views/UserForm';
-import User from 'models/User';
+import User, { UserProps } from 'models/User';
+import Collection from 'models/Collection';
+import UserList from 'views/UserList';
+import { API_URL } from 'config';
 
-const root = document.getElementById('root');
+const users = new Collection((json: UserProps) => User.create(json));
+users.fetch(`${API_URL}/users`);
 
-if (root) {
-  const userForm = new UserForm(root, User.create({ name: 'knight', age: 25 }));
-  userForm.render();
-} else {
-  throw new Error('Root element not found');
-}
+users.on('change', () => {
+  const root = document.getElementById('root');
+
+  if (root) {
+    const userList = new UserList(root, users);
+    userList.render();
+    console.log(userList);
+  } else {
+    throw new Error('Root element not found');
+  }
+});
